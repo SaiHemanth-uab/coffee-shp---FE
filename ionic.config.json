@@ -1,0 +1,7 @@
+{
+  "name": "online_market",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
