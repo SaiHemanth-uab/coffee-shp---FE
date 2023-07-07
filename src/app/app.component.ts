@@ -1,18 +1,46 @@
-import { Component } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewChecked {
   public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+    { title: 'Profile', url: '/dashboard/Profile', icon: 'person' },
+    { title: 'Dashboard', url: '/dashboard', icon: 'home' },
+    { title: 'Modules', url: '/dashboard/Modules', icon: 'book' },
+    { title: 'Quizzes', url: '/dashboard/Quizzes', icon: 'document-text' },
+    { title: 'Grades', url: '/dashboard/Grades', icon: 'ribbon' },
+    { title: 'Help', url: '/dashboard/Help', icon: 'help' },
+    { title: 'Logout', url: '/login', icon: 'log-out' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  constructor(private router: Router) {}
+  urllist = ['', '/login', '/signup'];
+  currentUrl = false;
+  currentModuleUrl: any = '';
+  ngOnInit(): void {}
+  currentRoute = this.appPages[0].url;
+  clickNav(route: string) {
+    this.currentRoute = route;
+    console.log(this.currentRoute);
+  }
+  ngAfterViewChecked() {
+    setTimeout(() => {
+      this.currentRoute = this.router.url;
+
+      this.currentModuleUrl = this.router.url;
+
+      !this.urllist.find((x) => x == this.router.url)
+        ? (this.currentUrl = true)
+        : (this.currentUrl = false);
+    });
+  }
 }
