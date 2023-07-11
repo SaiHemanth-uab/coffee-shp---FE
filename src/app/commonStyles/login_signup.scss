@@ -45,6 +45,15 @@ ion-input {
 .uab-logo{
     width: 168px !important;
 }
-
+.bg_image{
+    background-image: url("../../assets/coffee.jpg") ;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+:host{
+--backgroung: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+}
 
 

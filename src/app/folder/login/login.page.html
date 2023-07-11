@@ -1,8 +1,13 @@
-<ms-auth-form
-  [ionicForm]="ionicForm"
-  [appName]="'Online Market Place'"
-  (submit)="isSubmittedForm($event)"
-  [appLogo]="'assets/icon/logo.svg'"
-  [dataForms]="formData"
-  [submitButtonDetals]="submitButtonDetals"
-></ms-auth-form>
+<div class="h-100">
+  <div class="bg_image h-100">
+    <ms-auth-form
+      [ionicForm]="ionicForm"
+      [appName]="'Log In'"
+      (submit)="isSubmittedForm($event)"
+      [isShowLogo]="false"
+      [appLogo]="'assets/coffee-shop.avif'"
+      [dataForms]="formData"
+      [submitButtonDetals]="submitButtonDetals"
+    ></ms-auth-form>
+  </div>
+</div>
