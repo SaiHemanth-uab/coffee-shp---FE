@@ -12,6 +12,9 @@ export class MenuService {
   getMenuList() {
     return this.http.get('http://localhost:8080/api/menu');
   }
+  getSubCategoryList(categoryId:string) {
+    return this.http.get('http://localhost:8080/api/'+categoryId+'/items');
+  }
   login(logdata: any): any {
     return this.http.post('http://localhost:8080/api/login', logdata);
   }

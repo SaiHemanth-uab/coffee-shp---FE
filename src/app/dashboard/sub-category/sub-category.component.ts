@@ -35,10 +35,11 @@ export class SubCategoryComponent implements OnInit {
     let categoryId_typeOffood = this.router.url.split("sub-category/")[1];
     let footType = categoryId_typeOffood.split("@")[0];
     let categoryId = categoryId_typeOffood.split("@")[1];
-    this.menuService.getMenu().subscribe((data: any) => {
-      this.jsonData = data[footType].categories.filter(
-        (x: any, i: any) => x.id == categoryId
-      )[0].listOfItems;
+    this.menuService.getSubCategoryList(categoryId).subscribe((data: any) => {
+      this.jsonData = data.data
+      //this.jsonData = data[footType].categories.filter(
+       // (x: any, i: any) => x.id == categoryId
+      //)[0].listOfItems;
       this.onRearrangeCartInfo();
     });
   }
