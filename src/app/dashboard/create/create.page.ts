@@ -22,14 +22,16 @@ export class CreatePage implements OnInit {
   }
 
   constructor(private menuService:MenuService,private router:Router) { }
-
+  menuData: Array<any> = [];
+  
   ngOnInit() {
     this.getMenuData();
   }
   getMenuData(){
-    this.menuService.getMenu().subscribe((MenuCard:any)=>{
-            this.Menudata=MenuCard;
-    })
+    this.menuService.getMenuList().subscribe((data:any)=>{
+            this.menuData = data.data;
+            console.log(this.menuData, ',menu');
+    });
   }
   fileSelected(event:any){
     const file = event.target.files[0];
