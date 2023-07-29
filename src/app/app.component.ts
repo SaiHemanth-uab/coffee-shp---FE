@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ];
   constructor(private router: Router) {}
   urllist = ['', '/login', '/signup'];
-  currentUrl = false;
+  currentUrl = true;
   currentModuleUrl: any = '';
   ngOnInit(): void {}
   currentRoute = this.appPages[0].url;
@@ -43,4 +43,5 @@ export class AppComponent implements OnInit, AfterViewChecked {
         : (this.currentUrl = false);
     });
   }
+ 
 }

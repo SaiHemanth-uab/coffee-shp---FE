@@ -1,0 +1,33 @@
+
+<div class="container">
+  <div class="float-right">
+    <ion-button color="dark" fill="outline" shape="round" (click)="openCreateForm()"><ion-icon name="add-outline"></ion-icon> Add Category</ion-button>
+  </div>
+  <div class="row" *ngFor="let type of menuData|keyvalue">
+    <div>
+      <div>
+        <ion-item>
+          <ion-label><h1>{{type.key}}</h1></ion-label>
+        </ion-item>
+      </div>
+      <div class="d-flex flex-row">
+        <div
+          *ngFor="let cate of type.value.categories"
+          class="category"
+          (click)="openCategory(cate.id, type.key)"
+        >
+          <div
+            class="d-flex flex-column justify-content-center align-items-center"
+          >
+            <div>
+              <img [src]="cate.imageUrl" class="imageSet" />
+            </div>
+            <div>
+              <ion-label><h3 class="name">{{cate.name}}</h3></ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
 export class SignupPage
   implements OnInit, AfterContentChecked, OnChanges, AfterViewInit
 {
+  
   ionicForm: FormGroup = this.formBuilder.group({});
   isSubmitted = false;
   isLoading = false;
@@ -37,7 +39,8 @@ export class SignupPage
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public menuService:MenuService
   ) {}
   formData: any;
   ngOnChanges() {
@@ -137,7 +140,7 @@ export class SignupPage
       {
         label: 'User Name',
         type: 'text',
-        alias: 'User Name',
+        alias: 'username',
         validators: [
           {
             key: 'required',
@@ -192,7 +195,20 @@ export class SignupPage
 
       const payload: any = {
         ...event.value,
+        role:'admin'
       };
+      var formData=JSON.stringify(payload);
+      console.log(payload,'payload')
+      console.log(formData,'formData')
+      this.menuService.signUp(payload).subscribe((success)=>{
+        alert("Successfully created account")
+        this.router.navigate(['/login']);
+      },
+      (err)=>{
+        console.log(err,"Got an error");
+      }
+
+      )
       // this.authenticationService.onLogin(payload).subscribe({
       //   next: (res: any) => {
       //     this.isSubmitted = !this.isSubmitted;

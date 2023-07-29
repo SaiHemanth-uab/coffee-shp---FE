@@ -3,36 +3,5 @@
 </ion-app>
 <ion-app *ngIf="currentUrl">
   <app-navbar></app-navbar>
-  <ion-split-pane class="mt-6" contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-menu-toggle
-            auto-hide="false"
-            *ngFor="let p of appPages; let i = index"
-          >
-            <ion-item
-              (click)="clickNav(p.url)"
-              routerDirection="root"
-              [routerLink]="[p.url]"
-              lines="none"
-              detail="false"
-              [ngClass]="p.url === currentRoute ? 'app_theme_color' : ''"
-            >
-              <ion-icon
-                [ngClass]="p.url === currentRoute ? 'app_theme_color' : ''"
-                slot="start"
-                [ios]="p.icon + '-outline'"
-                [md]="p.icon + '-sharp'"
-              ></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
-  <!-- guardData -->
+    <ion-router-outlet id="main-content" class="space"></ion-router-outlet> 
 </ion-app>
