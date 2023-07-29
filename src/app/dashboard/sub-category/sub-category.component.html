@@ -1,0 +1,81 @@
+<div>
+  <ion-button color="dark" fill="outline" shape="round" (click)="openNewItemForm()" class="float-right"><ion-icon name="add-outline"></ion-icon> New Item</ion-button>
+</div>
+<ion-row *ngIf="jsonData">
+  <ion-col size-md="3" *ngFor="let item of jsonData; let i = index">
+    <ion-card>
+      <div class="">
+        <ion-card-header>
+          <ion-card-title class="text-center">{{ item.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div
+            class="d-flex flex-column justify-content-center align-items-center"
+          >
+            <div>
+              <img [src]="item.imageUrl" class="logos imageSet" />
+            </div>
+            <div>
+              <ion-card-subtitle *ngIf="item.DefaultSelectedSize > -1"
+                >$
+                {{ item.sizes[item.DefaultSelectedSize].price }}
+              </ion-card-subtitle>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+              <span *ngFor="let quantity of item.sizes; let j = index">
+                <ion-button
+                  color="dark"
+                  shape="round"
+                  [fill]="item.DefaultSelectedSize == j ? 'solid' : 'outline'"
+                  (click)="SelectedSize(item, j)"
+                  [disabled]="!quantity.availableInStock"
+                  >{{ quantity.size }}</ion-button
+                >
+              </span>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div
+              *ngIf="
+                item.DefaultSelectedSize > -1 &&
+                item.sizes[item.DefaultSelectedSize].isSelected > 0
+              "
+            >
+              <ion-button
+                (click)="DecreseQuantity(item, item.DefaultSelectedSize)"
+                >-</ion-button
+              >
+              <b class="f-24">{{
+                item.sizes[item.DefaultSelectedSize].isSelected
+              }}</b>
+              <ion-button
+                (click)="IncreseQuantity(item, item.DefaultSelectedSize)"
+                >+</ion-button
+              >
+            </div>
+            <ion-button
+              *ngIf="
+                item.DefaultSelectedSize > -1 &&
+                item.sizes[item.DefaultSelectedSize].isSelected < 1
+              "
+              shape="round"
+              (click)="AddtoCart(item, i)"
+              >{{ "Add to Cart" }}</ion-button
+            >
+          </div>
+        </ion-card-content>
+        <!-- <div>
+           
+          </div>
+          <div>
+           
+          </div> -->
+      </div>
+    </ion-card>
+  </ion-col>
+</ion-row>
+<ion-row class="justify-content-end">
+  <ion-button *ngIf="isOneItemSelected" shape="round" (click)="GotoCart()">{{
+    "Go to Cart"
+  }}</ion-button>
+</ion-row>
