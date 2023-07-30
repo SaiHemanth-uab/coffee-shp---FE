@@ -7,14 +7,14 @@ import {
   OnInit,
   Output,
   EventEmitter,
-} from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
-import { MenuService } from "src/app/services/menu.service";
+} from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MenuService } from 'src/app/services/menu.service';
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"],
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage
   implements OnInit, AfterContentChecked, OnChanges, AfterViewInit
@@ -26,13 +26,13 @@ export class LoginPage
   @Output() OpenMenu = new EventEmitter();
   submitButtonDetals = {
     submitBtnInfo: {
-      buttonName: "Log in",
-      buttonColor: "success btn-success-dark",
+      buttonName: 'Log in',
+      buttonColor: 'success btn-success-dark',
     },
     extraLinks: [
       {
         linkText: "don't have account ?",
-        redirectUrl: "/signup",
+        redirectUrl: '/signup',
       },
     ],
   };
@@ -54,9 +54,9 @@ export class LoginPage
     this.cdr.markForCheck();
   }
   ngOnInit() {
-    sessionStorage.removeItem("cardData");
-    let checkJWT = sessionStorage.getItem("access_token");
-    let haveRefreshToken = localStorage.getItem("refresh_token");
+    sessionStorage.removeItem('cardData');
+    let checkJWT = sessionStorage.getItem('access_token');
+    let haveRefreshToken = localStorage.getItem('refresh_token');
     let refreshed = false;
     if (checkJWT || haveRefreshToken) {
       // this.authenticationService.refreshToken().subscribe({
@@ -120,41 +120,36 @@ export class LoginPage
 
     this.formData = [
       {
-        label: "Email",
-        type: "email",
-        alias: "email",
+        label: 'User Name',
+        type: 'text',
+        alias: 'username',
         validators: [
           {
-            key: "required",
+            key: 'required',
             value: true,
-            customMessage: "",
-          },
-          {
-            key: "email",
-            value: true,
-            customMessage: `Please Enter the valid Email.`,
+            customMessage: '',
           },
         ],
-        value: "",
+        value: '',
       },
 
       {
-        label: "Password",
-        type: "password",
-        alias: "password",
+        label: 'Password',
+        type: 'password',
+        alias: 'password',
         validators: [
           {
-            key: "required",
+            key: 'required',
             value: true,
-            customMessage: "",
+            customMessage: '',
           },
           {
-            key: "minlength",
+            key: 'minlength',
             value: 5,
-            customMessage: "Password should be minimum 5 charecter length",
+            customMessage: 'Password should be minimum 5 charecter length',
           },
         ],
-        value: "",
+        value: '',
       },
     ];
   }
@@ -189,8 +184,8 @@ export class LoginPage
       //   },
       // });
       this.menuService.login(payload).subscribe((success: any) => {
-        this.router.navigate(["/dashboard"]);
-        console.log("Yes success");
+        this.router.navigate(['/dashboard']);
+        console.log('Yes success');
       });
     }
 
