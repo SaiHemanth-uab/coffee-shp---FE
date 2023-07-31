@@ -1,20 +1,22 @@
 <ion-toolbar>
   <ion-title>Cart Items</ion-title>
 </ion-toolbar>
-<div class="d-flex">
-<div>
+<div class="row">
+<div class="col-md-6">
   <ion-row *ngIf="cartItems.length >0">
+    <div class="col-md-12">
     <ion-col *ngFor="let item of cartItems">
       <ion-card>
-        <div
-          class="d-flex flex-row"
-        >
+        <div class="row">
+        
         <ion-card-content>
           <div>
             <img [src]="item.imageUrl" alt="" class="imageSet" />
           </div>
         </ion-card-content>
-          <ion-card-header class="d-flex justify-content-center">
+      
+      
+          <ion-card-header class="d-flex justify-content-center" >
             <ion-card-title>{{item.name}}</ion-card-title>
             <ion-card-subtitle
               ><b>Price:</b>$ {{item.itemInfo.price * item.itemInfo.isSelected|
@@ -22,21 +24,22 @@
               <div>
                 <ion-card-subtitle
                   ><b>Size:</b>
-                  {{item.itemInfo.size|uppercase}}</ion-card-subtitle
-                >
+                  {{item.itemInfo.size|uppercase}}</ion-card-subtitle>
                 <ion-card-subtitle
                   ><b>Quantity:</b>
-                  {{item.itemInfo.isSelected}}</ion-card-subtitle
-                >
+                  {{item.itemInfo.isSelected}}</ion-card-subtitle>
               </div>
             </ion-card-subtitle>
           </ion-card-header>
+          
         </div>
       </ion-card>
     </ion-col>
+  </div>
   </ion-row>
+
 </div>
-<div>
+<div class="col-md-6">
         <ion-card>
           <ion-card-header>
             <ion-card-title> Total Price :${{TotalPrice}} </ion-card-title>
