@@ -43,10 +43,15 @@
 //     mix-blend-mode:color-burn;
 // }
 .imageSet{
+    cursor: pointer;
         width:200px !important;
     border-radius:100% !important;
     margin:15px !important;
-   aspect-ratio: 7/5;
+   aspect-ratio: 5/5;
+   border: 1px solid black;
     
     
+  }
+  .cursor-pointer{
+    cursor: pointer;
   }

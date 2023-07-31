@@ -14,6 +14,9 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
     this.getMenuData();
   }
+  async ionViewDidEnter() {
+    await this.getMenuData();
+  }
   getMenuData() {
     this.menuService.getMenuList().subscribe((data: any) => {
       this.menuData = data.data;

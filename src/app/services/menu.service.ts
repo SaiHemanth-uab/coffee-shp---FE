@@ -19,6 +19,15 @@ export class MenuService {
     ///api/create/:category/item
     return this.http.put(`http://localhost:8080/api/create/${id}/item`, data);
   }
+  CreateCategoryByMenu(type: string, payload: any) {
+    //http://localhost:8080/api/Drinks
+    return this.http.post(`http://localhost:8080/api/${type}`, payload);
+  }
+  getMenuItemById(section: string, itemid: string) {
+    return this.http.get(
+      `http://localhost:8080/api/menu/listItems/${section}/${itemid}`
+    );
+  }
   login(logdata: any): any {
     return this.http.post('http://localhost:8080/api/login', logdata);
   }

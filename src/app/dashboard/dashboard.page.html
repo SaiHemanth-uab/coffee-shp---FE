@@ -1,8 +1,13 @@
-
+<div class="d-flex justify-content-end">
+  <ion-button
+    color="primary"
+    class="ml-auto mr-4"
+    shape="round"
+    (click)="openCreateForm()"
+    ><ion-icon name="add-outline"></ion-icon> Add Category</ion-button
+  >
+</div>
 <div class="container">
-  <div class="float-right">
-    <ion-button color="dark" fill="outline" shape="round" (click)="openCreateForm()"><ion-icon name="add-outline"></ion-icon> Add Category</ion-button>
-  </div>
   <div class="row" *ngFor="let type of menuData|keyvalue">
     <div>
       <div>
