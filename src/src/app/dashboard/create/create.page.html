@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">New Category</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form #myForm="ngForm" (ngSubmit)="Submit()">
+        <div class="form-group">
+          <ion-item>
+            <ion-label>Choose an option:</ion-label>
+            <ion-select
+              [(ngModel)]="newCategory.CategoryType"
+              name="selectedOption"
+            >
+              <ion-select-option
+                *ngFor="let item of menuData |keyvalue"
+                [value]="item.key"
+                >{{item.key}}</ion-select-option
+              >
+
+              <!-- Add more options as needed -->
+            </ion-select>
+          </ion-item>
+        </div>
+        <div class="form-group">
+          <ion-item>
+            <ion-input
+              label="Item Name"
+              [(ngModel)]="newCategory.name"
+              name="itemname"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-group">
+          <ion-item>
+            <!-- <input
+              type="file"
+              name="image"
+              [(ngModel)]="newCategory.imageUrl"
+              (change)="fileSelected($event)"
+            /> -->
+            <input
+              [(ngModel)]="newCategory.imageUrl"
+              type="url"
+              name="url"
+              id="url"
+              placeholder="https://example.com"
+              pattern="https://.*"
+              size="30"
+              required
+            />
+          </ion-item>
+        </div>
+        <div class="form-group">
+          <ion-button type="submit">Add Item</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
