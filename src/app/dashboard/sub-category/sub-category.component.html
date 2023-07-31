@@ -1,5 +1,12 @@
 <div>
-  <ion-button color="dark" fill="outline" shape="round" (click)="openNewItemForm()" class="float-right"><ion-icon name="add-outline"></ion-icon> New Item</ion-button>
+  <ion-button
+    color="dark"
+    fill="outline"
+    shape="round"
+    (click)="openNewItemForm()"
+    class="float-right"
+    ><ion-icon name="add-outline"></ion-icon> New Item</ion-button
+  >
 </div>
 <ion-row *ngIf="jsonData">
   <ion-col size-md="3" *ngFor="let item of jsonData; let i = index">
