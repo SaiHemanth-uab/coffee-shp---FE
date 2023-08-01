@@ -99,6 +99,18 @@
     </ion-col>
   </ion-row>
   <ion-row *ngIf="jsonData == null" class="justify-content-center f-24">
-    <h5>No Items are available!</h5>
+    <h6 class="alert alert-warning mt-5">
+      No Items are available
+      <span *ngIf="role === 'admin'"> please</span> &nbsp;
+      <a
+        *ngIf="role === 'admin'"
+        href="javascript:void(0)"
+        (click)="openNewItemForm()"
+        >click here</a
+      >
+      &nbsp;
+
+      <span *ngIf="role === 'admin'">to add items!</span>
+    </h6>
   </ion-row>
 </ion-content>

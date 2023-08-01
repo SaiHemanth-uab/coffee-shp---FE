@@ -14,8 +14,12 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   constructor(public router: Router) {}
   role: any = '';
+  userName = '';
   ngOnInit() {
     this.role = sessionStorage.getItem('role');
+    this.userName = JSON.parse(
+      sessionStorage.getItem('userInfo') as any
+    ).displayName;
   }
   @HostListener('click', ['$event'])
   onAnyAction(event: any) {

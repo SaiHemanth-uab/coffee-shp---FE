@@ -9,6 +9,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuService } from 'src/app/services/menu.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -22,6 +23,7 @@ export class SignupPage
   isSubmitted = false;
   isLoading = false;
   windowSize = 600;
+  isToastOpen = false;
 
   submitButtonDetals = {
     submitBtnInfo: {
@@ -39,7 +41,8 @@ export class SignupPage
     public formBuilder: FormBuilder,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public menuService: MenuService
+    public menuService: MenuService,
+    private toastController:ToastController
   ) {}
   formData: any;
   ngOnChanges() {
@@ -131,7 +134,16 @@ export class SignupPage
   ngAfterContentChecked() {
     this.windowSize = window.innerWidth;
   }
+  async presentToast(position: 'top' | 'middle' | 'bottom') {
+    const toast = await this.toastController.create({
+      message: 'Account Created Successfully !!!',
+      duration: 1500,
+      position: position,
+      color:'success',
+    });
 
+    await toast.present();
+  }
   isSubmittedForm(event: any) {
     if (event.status && event.status == 'VALID') {
       const payload: any = {
@@ -141,7 +153,7 @@ export class SignupPage
 
       this.menuService.signUp(payload).subscribe(
         (success) => {
-          alert('Successfully created account');
+          this.presentToast('top');
           this.router.navigate(['/login']);
         },
         (err) => {

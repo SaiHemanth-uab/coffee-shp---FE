@@ -11,6 +11,7 @@ import {
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuService } from '../../services/menu.service';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,6 +24,7 @@ export class LoginPage
   isSubmitted = false;
   isLoading = false;
   windowSize = 600;
+  isToastOpen = false;
   @Output() OpenMenu = new EventEmitter();
   submitButtonDetals = {
     submitBtnInfo: {
@@ -40,7 +42,8 @@ export class LoginPage
     public formBuilder: FormBuilder,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private toastController:ToastController
   ) {}
   formData: any;
   ngOnChanges() {
@@ -107,9 +110,24 @@ export class LoginPage
   ngAfterContentChecked() {
     this.windowSize = window.innerWidth;
   }
+  toaster(){
+    this.isToastOpen=true;
+    console.log("toaster")
+  }
+  async presentToast(position: 'top' | 'middle' | 'bottom') {
+    const toast = await this.toastController.create({
+      message: 'Successfully logged In !!!',
+      duration: 1500,
+      position: position,
+      color:'success',
+    });
+
+    await toast.present();
+  }
 
   isSubmittedForm(event: any) {
     if (event.valid) {
+      this.isToastOpen=true;
       const payload: any = {
         ...event.value,
       };
@@ -117,6 +135,7 @@ export class LoginPage
         next: (res: any) => {
           this.isSubmitted = !this.isSubmitted;
           sessionStorage.setItem('userInfo', JSON.stringify(res.data.user));
+          this.presentToast('top')
           this.goToDashBoard();
           this.ionicForm.reset();
         },

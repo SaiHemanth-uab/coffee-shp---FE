@@ -65,3 +65,11 @@
     -webkit-appearance: none;
     outline: unset;
   }
+  ion-toast.my-toast {
+//   --background: var(--ion-color-danger);
+//   --color: var(--ion-color-danger-contrast);
+//   --width: 50%;
+//   font-size: 3em;
+  font-weight: bold;
+//   text-align: center;
+}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../services/menu.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cart-section',
@@ -10,11 +11,13 @@ import { MenuService } from '../../services/menu.service';
 export class CartSectionPage implements OnInit {
   cartItems: any = [];
   TotalPrice = 0;
+  placeOrder = false;
 
   constructor(
     private route: ActivatedRoute,
     private menuService: MenuService,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {}
@@ -38,6 +41,17 @@ export class CartSectionPage implements OnInit {
 
     this.calculatePrice();
   }
+  async presentToast(message = 'Order Placed Successfully !!!') {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 8000,
+      position: 'bottom',
+      color: 'dark',
+      cssClass: 'my-toast',
+    });
+
+    await toast.present();
+  }
 
   order() {
     let userInfo: any = JSON.parse(sessionStorage.getItem('userInfo') as any);
@@ -49,12 +63,14 @@ export class CartSectionPage implements OnInit {
       ordered_time: new Date(),
       orderId: new Date().getTime().toString(36),
     };
+
     this.menuService.createOrder(preparePayload).subscribe({
       next: (data) => {
-        alert(
-          'Your Order was successfully placed Please wait for a while to recieve your Items!'
+        this.presentToast(
+          `Order Placed Successfully! Please, Note it down the Order number: "${preparePayload.orderId}" and wait for your order at the counter!`
         );
         sessionStorage.removeItem('cartData');
+        this.placeOrder = false;
         this.router.navigate(['/dashboard']);
       },
       error: (error: any) => {
@@ -63,9 +79,17 @@ export class CartSectionPage implements OnInit {
     });
   }
   clickToHome() {
+    this.placeOrder = false;
     this.router.navigate(['/dashboard']);
   }
   addTax(price: any) {
     return Number(price) + Number(price) * 0.1;
+  }
+  addmore() {
+    this.router.navigate(['/dashboard']);
+    this.placeOrder = false;
+  }
+  proceed() {
+    this.placeOrder = true;
   }
 }
