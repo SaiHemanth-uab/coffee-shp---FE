@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuService } from 'src/app/services/menu.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-sub-category',
@@ -12,36 +12,40 @@ export class SubCategoryComponent implements OnInit {
   isOneItemSelected = false;
   selectedList: any[] = [];
 
-  // @HostListener('window:beforeunload') storeItems() {
-  //   console.log('called');
-  //   if (this.selectedList) {
-  //     sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
-  //   }
-  // }
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event: any) {
-  //   if (this.selectedList) {
-  //     sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
-  //   }
-  // }
   constructor(public menuService: MenuService, private router: Router) {
     // if (sessionStorage.getItem('cartData')) {
     //   this.selectedList = JSON.parse(sessionStorage.getItem('cartData') as any);
     // }
   }
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+  }
+  // async ionViewDidEnter() {
+  //   console.log('ionViewDidEnter');
+  // }
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter');
+    // Subscribe to the NavigationEnd event to detect when the component is entered
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const navigationEvent = event as NavigationEnd;
+        if (navigationEvent.url.startsWith('/dashboard/sub-category/')) {
+          // Reload the page when the URL starts with the specific pattern
+          window.location.reload();
+        }
+      }
+    });
+  }
   getMenuData() {
     let categoryId_typeOffood = this.router.url.split('sub-category/')[1];
     let footType = categoryId_typeOffood.split('@')[0];
     let categoryId = categoryId_typeOffood.split('@')[1];
-    console.log(categoryId, 'categoryId');
+
     this.menuService
       .getMenuCategoryItemList(categoryId)
       .subscribe((data: any) => {
         this.jsonData;
         if (data && data.data) this.jsonData = data.data;
-        // this.jsonData = data[footType].categories.filter(
-        //   (x: any, i: any) => x.id == categoryId
-        // )[0].listOfItems;
         this.onRearrangeCartInfo();
       });
   }
@@ -50,7 +54,7 @@ export class SubCategoryComponent implements OnInit {
     if (this.selectedList.length > 0) {
       this.selectedList.forEach((item: any) => {
         let idx = this.jsonData.findIndex((x: any) => x.itemid == item.itemId);
-        console.log(idx);
+
         if (idx > -1) {
           this.setWithIndex(idx, item);
         }
@@ -69,18 +73,18 @@ export class SubCategoryComponent implements OnInit {
       }
     });
     this.jsonData = dup_json;
-    console.log(dup_json);
   }
-  ngOnInit() {}
-  async ionViewDidEnter() {
+  async ngOnInit() {
     if (sessionStorage.getItem('cartData')) {
       this.selectedList = JSON.parse(sessionStorage.getItem('cartData') as any);
+      sessionStorage.removeItem('cardData');
     }
-    console.log(this.selectedList);
+
     if (this.selectedList.length > 0) this.isOneItemSelected = true;
 
     await this.getMenuData();
   }
+
   SelectedSize(item: any, index: number) {
     item.DefaultSelectedSize = index;
   }
@@ -114,31 +118,44 @@ export class SubCategoryComponent implements OnInit {
   GotoCart() {
     sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
     const parts = this.router.url.split('/');
-    const mainPath = parts[1]; // This should be 'dashboard'
-    console.log(mainPath);
-    // Navigating to the 'dashboard/cart-section' route
-    this.router.navigate([mainPath, 'cart-section']);
+    const mainPath = parts[1];
 
-    console.log(this.router.url);
+    this.router.navigate([mainPath, 'cart-section']);
   }
   IncreseQuantity(item: any, j: number) {
     item.sizes[j].isSelected += 1;
+    console.log(this.selectedList, item);
+    this.onCheckInSelectedListAndReplace(item);
     if (this.selectedList.length > 0) this.isOneItemSelected = true;
     sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
+  }
+  onCheckInSelectedListAndReplace(ipitem: any) {
+    this.selectedList.forEach((item: any) => {
+      if (item.itemId === ipitem.itemid)
+        item.itemInfo = ipitem.sizes.filter(
+          (x: any) => x.size == item.itemInfo.size
+        )[0];
+    });
   }
   DecreseQuantity(item: any, j: number) {
     if (item.sizes[j].isSelected > 0) {
       item.sizes[j].isSelected -= 1;
       if (item.sizes[j].isSelected < 1) {
-        //  this.selectedList.filter((x: any) => x.)
+        this.selectedList = this.selectedList.filter(
+          (obj) => obj.itemInfo.isSelected > 0
+        );
+
+        console.log(item.sizes[j]);
+      } else {
+        this.onCheckInSelectedListAndReplace(item);
       }
     }
-    console.log(this.selectedList);
-    this.selectedList = this.selectedList.filter(
-      (x) => x.itemInfo.isSelected > 0
-    );
-    console.log(this.selectedList);
-
+    // console.log(this.selectedList);
+    // this.selectedList = this.selectedList.filter(
+    //   (x) => x.itemInfo.isSelected > 0
+    // );
+    // console.log(this.selectedList);
+    console.log(this.selectedList, item, j);
     sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
     if (this.selectedList.length > 0) this.isOneItemSelected = true;
   }

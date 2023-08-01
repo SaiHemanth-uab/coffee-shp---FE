@@ -1,52 +1,69 @@
 <ion-toolbar>
   <ion-title>Cart Items</ion-title>
 </ion-toolbar>
-<div class="row">
-<div class="col-md-6">
-  <ion-row *ngIf="cartItems.length >0">
-    <div class="col-md-12">
-    <ion-col *ngFor="let item of cartItems">
-      <ion-card>
-        <div class="row">
-        
-        <ion-card-content>
-          <div>
-            <img [src]="item.imageUrl" alt="" class="imageSet" />
-          </div>
-        </ion-card-content>
-      
-      
-          <ion-card-header class="d-flex justify-content-center" >
-            <ion-card-title>{{item.name}}</ion-card-title>
-            <ion-card-subtitle
-              ><b>Price:</b>$ {{item.itemInfo.price * item.itemInfo.isSelected|
-              number: '1.2'}}
+<ion-content>
+  <div>
+    <ion-row *ngIf="cartItems.length >0">
+      <ion-col size-md="8" class="justify-content-center">
+        <ion-card *ngFor="let item of cartItems">
+          <ion-card-content>
+            <div class="row d-flex">
               <div>
-                <ion-card-subtitle
-                  ><b>Size:</b>
-                  {{item.itemInfo.size|uppercase}}</ion-card-subtitle>
-                <ion-card-subtitle
-                  ><b>Quantity:</b>
-                  {{item.itemInfo.isSelected}}</ion-card-subtitle>
+                <img [src]="item.imageUrl" alt="" class="imageSet" />
               </div>
-            </ion-card-subtitle>
-          </ion-card-header>
-          
-        </div>
-      </ion-card>
-    </ion-col>
-  </div>
-  </ion-row>
-
-</div>
-<div class="col-md-6">
+              <div class="mt-4">
+                <ion-card-title>{{item.name}}</ion-card-title>
+                <div class="mt-2">
+                  <b>Price:</b>$ {{onMultiply(item['itemInfo']['price'] ,
+                  item.itemInfo.isSelected) | number: '1.2'}} |
+                  <b>Size:</b> {{item.itemInfo.size|uppercase}} |
+                  <b>Quantity:</b>
+                  {{item.itemInfo.isSelected}}
+                </div>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size-md="4">
         <ion-card>
           <ion-card-header>
-            <ion-card-title> Total Price :${{TotalPrice}} </ion-card-title>
-            <ion-card-content>
-              <div>Choose Payment Mode</div>
-            </ion-card-content>
+            <ion-card-title> List Of Items Selected</ion-card-title>
           </ion-card-header>
+          <ion-card-content>
+            <div>
+              <table class="table table-hover table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of cartItems">
+                    <td>{{item.name}}</td>
+                    <td>{{item.itemInfo.isSelected}}</td>
+                    <td>{{item.itemInfo.isSelected*item.itemInfo.price}}</td>
+                  </tr>
+                  <tr>
+                    <th>Total Price : $ {{TotalPrice}}</th>
+                  </tr>
+                  <tr>
+                    <th>GST : ${{5}}</th>
+                  </tr>
+                  <tr>
+                    <th>Total Amount : $ {{TotalPrice+5}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center">
+              <ion-button (click)="order()">Payment</ion-button>
+            </div>
+          </ion-card-content>
         </ion-card>
-</div>
-</div>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

@@ -14,13 +14,16 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
     this.getMenuData();
   }
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+  }
   async ionViewDidEnter() {
+    console.log('ionViewDidEnter');
     await this.getMenuData();
   }
   getMenuData() {
     this.menuService.getMenuList().subscribe((data: any) => {
       this.menuData = data.data;
-      console.log(this.menuData, ',menu');
     });
   }
   openCreateForm() {

@@ -9,6 +9,9 @@ export class MenuService {
   getMenu(): any {
     return this.http.get('assets/sample.json');
   }
+  getCustomersData(): any {
+    return this.http.get('assets/customers.json');
+  }
   getMenuList() {
     return this.http.get('http://localhost:8080/api/menu');
   }
@@ -33,5 +36,23 @@ export class MenuService {
   }
   signUp(userdata: any) {
     return this.http.post('http://localhost:8080/api/signup', userdata);
+  }
+  // updateItem(category:any,data:any):any{
+  //   return this.http.put(`http://localhost:8080/api/${category}`,data)
+  // }
+
+  createOrder(payload: any) {
+    console.log(payload);
+    return this.http.post(
+      'http://localhost:8080/api/cart/customer_order',
+      payload
+    );
+  }
+
+  getCustomerOrders() {
+    return this.http.get('http://localhost:8080/api/cart/customers_orders');
+  }
+  getAllUsers() {
+    return this.http.get('http://localhost:8080/api/userdata');
   }
 }

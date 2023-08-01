@@ -96,26 +96,21 @@
               </ion-col>
               <ion-col size-md="2" class="mt-2">
                 <ion-icon
-                  *ngIf="newItem.sizes.length - 1 == i"
-                  (click)="clickToAddSize()"
-                  class="custom-icon mt-4 ml-4 cursor-pointer"
-                  name="add-circle-sharp"
-                ></ion-icon>
-                <ion-icon
-                  *ngIf="newItem.sizes.length - 1 !== i"
+                  *ngIf="newItem.sizes.length > 1"
                   (click)="clickToremoveSize(i)"
                   class="custom-icon mt-4 ml-1 cursor-pointer"
                   name="close-circle-sharp"
                 ></ion-icon>
+                <ion-icon
+                  *ngIf="
+                    newItem.sizes.length - 1 == i && newItem.sizes.length < 3
+                  "
+                  (click)="clickToAddSize()"
+                  class="custom-icon mt-4 ml-4 cursor-pointer"
+                  name="add-circle-sharp"
+                ></ion-icon>
               </ion-col>
             </ion-row>
-            <!--*ngFor="let obj of sizeObj; let i = index" -->
-            <!-- <ion-item class="m-3">
-            <ion-input label="Size" size="2"></ion-input>
-            <ion-input label="Price" size="3" type="number"></ion-input>
-            <ion-input label="Unit" size="3" type="number"></ion-input>
-           
-          </ion-item> -->
           </div>
           <div class="form-group d-flex justify-content-end">
             <ion-button (click)="backPage()" type="button">Cancel</ion-button>

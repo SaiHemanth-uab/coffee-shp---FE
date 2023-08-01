@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { MenuService } from 'src/app/services/menu.service';
+import { NavController } from '@ionic/angular';
+import { MenuService } from '../../../services/menu.service';
 
 @Component({
   selector: 'app-newitem',
@@ -12,7 +13,8 @@ export class NewitemComponent implements OnInit {
   constructor(
     private location: Location,
     private menuService: MenuService,
-    private router: Router
+    private router: Router,
+    private navCtrl: NavController
   ) {}
   categroryName = '';
   isEditMode = '';
@@ -36,12 +38,14 @@ export class NewitemComponent implements OnInit {
   Submit(form: any) {
     if (form.valid) {
       this.newItem['category_id'] = this.categroryName;
-      this.newItem['itemid'] = this.newItem['name'].replaceAll(' ', '');
+      this.newItem['itemid'] = this.newItem['name'].replace(' ', '');
+      console.log(this.newItem, "I'm updating");
       this.menuService
         .createItedmByCategory(this.categroryName, this.newItem)
         .subscribe({
           next: (resp: any) => {
-            this.backPage();
+            //this.backPage();
+            this.navCtrl.back();
           },
           error: (error: any) => {},
         });

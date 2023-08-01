@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuService } from 'src/app/services/menu.service';
+import { MenuService } from '../../services/menu.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -55,69 +55,9 @@ export class LoginPage
   }
   ngOnInit() {
     sessionStorage.removeItem('cardData');
-    let checkJWT = sessionStorage.getItem('access_token');
-    let haveRefreshToken = localStorage.getItem('refresh_token');
-    let refreshed = false;
-    if (checkJWT || haveRefreshToken) {
-      // this.authenticationService.refreshToken().subscribe({
-      //   next: (res) => {
-      //     setTimeout(() => {
-      //       this.ngxService.stop();
-      //       this.goToDashBoard();
-      //     }, 5000);
-      //     this.isLoading = false;
-      //     refreshed = true;
-      //   },
-      //   error: (error) => {
-      //     sentryError(error);
-      //     this.ngxService.stop();
-      //     this.isLoading = false;
-      //     refreshed = false;
-      //   },
-      // });
-    }
-    // if (!refreshed) {
-    //   this.formData = [
-    //     {
-    //       label: 'Email',
-    //       type: 'email',
-    //       alias: 'email',
-    //       validators: [
-    //         {
-    //           key: 'required',
-    //           value: true,
-    //           customMessage: '',
-    //         },
-    //         {
-    //           key: 'email',
-    //           value: true,
-    //           customMessage: `Please Enter the valid Email.`,
-    //         },
-    //       ],
-    //       value: '',
-    //     },
-
-    //     {
-    //       label: 'Password',
-    //       type: 'password',
-    //       alias: 'password',
-    //       validators: [
-    //         {
-    //           key: 'required',
-    //           value: true,
-    //           customMessage: '',
-    //         },
-    //         {
-    //           key: 'minlength',
-    //           value: 5,
-    //           customMessage: 'Password should be minimum 5 charecter length',
-    //         },
-    //       ],
-    //       value: '',
-    //     },
-    //   ];
-    // }
-
+    // let checkJWT = sessionStorage.getItem('access_token');
+    // let haveRefreshToken = localStorage.getItem('refresh_token');
+    // let refreshed = false;
     this.formData = [
       {
         label: 'User Name',
@@ -159,7 +99,7 @@ export class LoginPage
   }
 
   goToDashBoard() {
-    // return this.router.navigate(['todo-dashboard']);
+    return this.router.navigate(['/dashboard']);
   }
 
   ngAfterContentChecked() {
@@ -171,37 +111,17 @@ export class LoginPage
       const payload: any = {
         ...event.value,
       };
-      // this.authenticationService.onLogin(payload).subscribe({
-      //   next: (res: any) => {
-      //     this.isSubmitted = !this.isSubmitted;
-      //     console.log('api');
-      //     this.goToDashBoard();
-      //     this.ionicForm.reset();
-      //   },
-      //   error: (error: { message: string; status: any }) => {
-      //     sentryError(error);
-      //     console.log(error);
-      //   },
-      // });
-      this.menuService.login(payload).subscribe((success: any) => {
-        this.router.navigate(['/dashboard']);
-        console.log('Yes success');
+      this.menuService.login(payload).subscribe({
+        next: (res: any) => {
+          this.isSubmitted = !this.isSubmitted;
+          sessionStorage.setItem('userInfo', JSON.stringify(res.data.user));
+          this.goToDashBoard();
+          this.ionicForm.reset();
+        },
+        error: (error: { message: string; status: any }) => {
+          console.log(error);
+        },
       });
     }
-
-    //  const payload: SignUpWithPasswordCredentials = {
-    //    ...this.ionicForm.value,
-    //  };
-    //  this.authenticationService.onLogin(payload).subscribe({
-    //    next: (res: any) => {
-    //
-    //      this.isSubmitted = !this.isSubmitted;
-    //      this.goToDashBoard();
-    //    },
-    //    error: (error: { message: string; status: any }) => {
-    //      sentryError(error);
-    //      console.log(error);
-    //    },
-    //  });
   }
 }

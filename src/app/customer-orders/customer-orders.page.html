@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true">
+  <ion-title size="large" class="customer-title">customer-orders</ion-title>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size-md="3"
+        *ngFor="let item of customerOrders | sortBy:'desc':'ordered_time'"
+      >
+        <ion-card>
+          <ion-card-header class="alert alert-success">
+            <ion-card-title>{{item.username}}</ion-card-title>
+
+            <!-- <div class="mt-2"><b>Customer Name:</b>{{item.username}}</div> -->
+          </ion-card-header>
+
+          <ion-card-content>
+            <div>
+              <b>Order id:&nbsp;</b
+              ><span class="text-success">{{item.orderId}}</span>
+            </div>
+            <div>
+              <b>Email :&nbsp;</b
+              ><span class="text-success">{{item.email}}</span>
+            </div>
+            <div>
+              <b>Total Items:&nbsp;</b
+              ><span class="text-success">{{item.orderedItems.length}}</span>
+            </div>
+            <div>
+              <b>Orderedn on:&nbsp;</b>
+              <span class="text-success"
+                >{{item.ordered_time | date:'medium':'UTC-5' }}</span
+              >
+            </div>
+
+            <ion-button
+              slot="end"
+              classs="ml-auto justify-content-end"
+              color="dark"
+              (click)="viewItems(item.orderedItems)"
+              >View Items</ion-button
+            >
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

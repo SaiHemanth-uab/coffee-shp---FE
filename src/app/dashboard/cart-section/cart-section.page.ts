@@ -1,47 +1,66 @@
-import { Component, HostListener, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
-  selector: "app-cart-section",
-  templateUrl: "./cart-section.page.html",
-  styleUrls: ["./cart-section.page.scss"],
+  selector: 'app-cart-section',
+  templateUrl: './cart-section.page.html',
+  styleUrls: ['./cart-section.page.scss'],
 })
 export class CartSectionPage implements OnInit {
   cartItems: any = [];
   TotalPrice = 0;
-  // @HostListener("window:beforeunload") storeCartItems() {
-  //   if (this.cartItems) {
-  //     console.log("sai");
-  //     sessionStorage.setItem("cartData", JSON.stringify(this.cartItems));
-  //   }
-  // }
-  constructor(private route: ActivatedRoute, private router: Router) {
-    // if (sessionStorage.getItem("cartData")) {
-    //   this.cartItems = JSON.parse(sessionStorage.getItem("cartData") ?? "");
-    //   sessionStorage.removeItem("cartData");
-    // } else {
-    //   this.cartItems = this.router.getCurrentNavigation()?.extras.state;
-    //   this.cartItems = this.cartItems.cartItems;
-    // }
-  }
+
+  constructor(
+    private route: ActivatedRoute,
+    private menuService: MenuService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    if (sessionStorage.getItem("cartData")) {
-      let data: any = sessionStorage.getItem("cartData");
+    if (sessionStorage.getItem('cartData')) {
+      let data: any = sessionStorage.getItem('cartData');
       this.cartItems = JSON.parse(data);
-      console.log(this.cartItems);
     } else {
       this.cartItems = [];
     }
 
     this.calculatePrice();
   }
+  onMultiply(x: any, y: any) {
+    return Number(x) * Number(y);
+  }
   calculatePrice() {
     if (this.cartItems) {
       for (let i of this.cartItems) {
-        this.TotalPrice += ((+i.itemInfo.price)*i.itemInfo.isSelected);
-        console.log(this.TotalPrice,i);
+        this.TotalPrice += +i.itemInfo.price * i.itemInfo.isSelected;
       }
     }
+  }
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+  }
+  async ionViewDidEnter() {
+    console.log('ionViewDidEnter');
+  }
+  order() {
+    let userInfo: any = JSON.parse(sessionStorage.getItem('userInfo') as any);
+    let preparePayload = {
+      userId: userInfo ? userInfo['uid'] : '',
+      username: userInfo ? userInfo['displayName'] : '',
+      email: userInfo ? userInfo['email'] : '',
+      orderedItems: this.cartItems,
+      ordered_time: new Date(),
+      orderId: new Date().getTime().toString(36),
+    };
+    this.menuService.createOrder(preparePayload).subscribe({
+      next: (data) => {
+        sessionStorage.removeItem('cartData');
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
   }
 }
