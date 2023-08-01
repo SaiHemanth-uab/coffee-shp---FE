@@ -63,4 +63,7 @@ export class CartSectionPage implements OnInit {
       },
     });
   }
+  clickToHome() {
+    this.router.navigate(['/dashboard']);
+  }
 }
