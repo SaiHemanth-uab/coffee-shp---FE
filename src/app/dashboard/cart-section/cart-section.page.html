@@ -16,7 +16,7 @@
                 <div class="mt-2">
                   <b>Price:</b>$ {{onMultiply(item['itemInfo']['price'] ,
                   item.itemInfo.isSelected) | number: '1.2'}} |
-                  <b>Size:</b> {{item.itemInfo.size|uppercase}} |
+                  <b>Size:</b> {{item.itemInfo.size | uppercase}} |
                   <b>Quantity:</b>
                   {{item.itemInfo.isSelected}}
                 </div>
@@ -44,22 +44,27 @@
                   <tr *ngFor="let item of cartItems">
                     <td>{{item.name}}</td>
                     <td>{{item.itemInfo.isSelected}}</td>
-                    <td>{{item.itemInfo.isSelected*item.itemInfo.price}}</td>
+                    <td>
+                      $ {{item.itemInfo.isSelected*item.itemInfo.price | number:
+                      '1.2'}}
+                    </td>
                   </tr>
                   <tr>
-                    <th>Total Price : $ {{TotalPrice}}</th>
+                    <th>Total Price : $ {{TotalPrice | number: '1.2'}}</th>
                   </tr>
                   <tr>
-                    <th>GST : ${{5}}</th>
+                    <th>Tax : $ 10%</th>
                   </tr>
                   <tr>
-                    <th>Total Amount : $ {{TotalPrice+5}}</th>
+                    <th>
+                      Total Amount : $ {{addTax(TotalPrice) | number: '1.2'}}
+                    </th>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div class="text-center">
-              <ion-button (click)="order()">Payment</ion-button>
+              <ion-button class="" (click)="order()">Place Order</ion-button>
             </div>
           </ion-card-content>
         </ion-card>

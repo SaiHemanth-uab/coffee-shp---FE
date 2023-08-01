@@ -55,6 +55,9 @@ export class CartSectionPage implements OnInit {
     };
     this.menuService.createOrder(preparePayload).subscribe({
       next: (data) => {
+        alert(
+          'Your Order was successfully placed Please wait for a while to recieve your Items!'
+        );
         sessionStorage.removeItem('cartData');
         this.router.navigate(['/dashboard']);
       },
@@ -65,5 +68,8 @@ export class CartSectionPage implements OnInit {
   }
   clickToHome() {
     this.router.navigate(['/dashboard']);
+  }
+  addTax(price: any) {
+    return Number(price) + Number(price) * 0.1;
   }
 }

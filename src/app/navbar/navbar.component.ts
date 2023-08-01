@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewChildDecorator,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,11 +14,17 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   constructor(public router: Router) {}
   role: any = '';
-  ngOnInit() {}
-  ionViewDidEnter() {
-    console.log('ionViewDidEnter');
+  ngOnInit() {
     this.role = sessionStorage.getItem('role');
   }
+  @HostListener('click', ['$event'])
+  onAnyAction(event: any) {
+    this.role = sessionStorage.getItem('role');
+  }
+  ionViewDidEnter() {
+    this.role = sessionStorage.getItem('role');
+  }
+
   customerOrders() {
     this.router.navigate(['customer-orders']);
   }
@@ -24,7 +35,6 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   goToCart() {
-    console.log('sjhgd');
     this.router.navigate(['/dashboard/cart-section']);
   }
 }
