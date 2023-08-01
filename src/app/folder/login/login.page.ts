@@ -97,7 +97,9 @@ export class LoginPage
   get errorControl() {
     return this.ionicForm.controls;
   }
-
+  ionViewWillEnter() {
+    sessionStorage.clear();
+  }
   goToDashBoard() {
     return this.router.navigate(['/dashboard']);
   }

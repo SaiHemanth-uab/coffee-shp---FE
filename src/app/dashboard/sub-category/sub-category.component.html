@@ -1,6 +1,7 @@
 <ion-content
   ><div class="d-flex ml-auto justify-content-end">
     <ion-button
+      *ngIf="role === 'admin'"
       color="primary"
       shape="round"
       (click)="openNewItemForm()"
@@ -20,6 +21,7 @@
         <div class="">
           <ion-card-header>
             <ion-icon
+              *ngIf="role === 'admin'"
               (click)="onEdit(item.itemid)"
               class="ml-auto cursor-pointer"
               size="large"

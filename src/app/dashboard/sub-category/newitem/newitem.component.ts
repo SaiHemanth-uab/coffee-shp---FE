@@ -18,6 +18,14 @@ export class NewitemComponent implements OnInit {
   ) {}
   categroryName = '';
   isEditMode = '';
+  ionViewWillEnter() {
+    if (
+      !sessionStorage.getItem('role') ||
+      sessionStorage.getItem('role') !== 'admin'
+    ) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
   ngOnInit() {
     this.categroryName = this.router.url.split('@')[1].split('/')[0];
     this.isEditMode = this.router.url.split('@')[1].split('/')[1];

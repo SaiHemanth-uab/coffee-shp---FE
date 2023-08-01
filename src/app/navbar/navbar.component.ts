@@ -8,10 +8,11 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   constructor(public router: Router) {}
-
+  role: any = '';
   ngOnInit() {}
   ionViewDidEnter() {
     console.log('ionViewDidEnter');
+    this.role = sessionStorage.getItem('role');
   }
   customerOrders() {
     this.router.navigate(['customer-orders']);

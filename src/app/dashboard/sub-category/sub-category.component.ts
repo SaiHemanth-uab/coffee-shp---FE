@@ -11,20 +11,17 @@ export class SubCategoryComponent implements OnInit {
   jsonData: any = undefined;
   isOneItemSelected = false;
   selectedList: any[] = [];
-
+  role: string | null = '';
   constructor(public menuService: MenuService, private router: Router) {
     // if (sessionStorage.getItem('cartData')) {
     //   this.selectedList = JSON.parse(sessionStorage.getItem('cartData') as any);
     // }
   }
   ionViewWillEnter() {
-    console.log('ionViewWillEnter');
+    this.role = sessionStorage.getItem('role');
   }
-  // async ionViewDidEnter() {
-  //   console.log('ionViewDidEnter');
-  // }
+
   ionViewDidEnter() {
-    console.log('ionViewDidEnter');
     // Subscribe to the NavigationEnd event to detect when the component is entered
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

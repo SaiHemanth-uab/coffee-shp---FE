@@ -9,12 +9,14 @@ import { Router, NavigationExtras } from '@angular/router';
 })
 export class DashboardPage implements OnInit {
   menuData: Array<any> = [];
+  role: string | null = '';
   constructor(public menuService: MenuService, public router: Router) {}
 
   ngOnInit() {
     this.getMenuData();
   }
   ionViewWillEnter() {
+    this.role = sessionStorage.getItem('role');
     console.log('ionViewWillEnter');
   }
   async ionViewDidEnter() {

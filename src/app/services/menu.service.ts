@@ -1,58 +1,97 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-  constructor(public http: HttpClient) {}
-  getMenu(): any {
-    return this.http.get('assets/sample.json');
+  private userSubject: BehaviorSubject<any> | any;
+  public user: Observable<any> | any;
+  constructor(public http: HttpClient, private router: Router) {
+    this.userSubject = new BehaviorSubject<any>(null);
+    this.user = this.userSubject.asObservable();
   }
-  getCustomersData(): any {
-    return this.http.get('assets/customers.json');
+  login(logdata: any): any {
+    return this.http.post(`${environment.baseURL}/login`, logdata).pipe(
+      map((user: any) => {
+        this.setSessionStorage(
+          user.data._tokenResponse.refreshToken,
+          user.data._tokenResponse.idToken,
+          user.data._tokenResponse.expiresIn,
+          user.data.user.uid,
+          user.data.user.email,
+          user.data.userdetails.role
+        );
+        this.userSubject.next(user.data._tokenResponse.refreshToken);
+
+        return user;
+      })
+    );
+  }
+  setSessionStorage(
+    refreshToken: string,
+    accessToken: string,
+    expiresIn: string,
+    uid: string,
+    email: any,
+    role: any = 'user'
+  ) {
+    sessionStorage.setItem(`refreshToken`, refreshToken);
+    sessionStorage.setItem(`accessToken`, accessToken);
+    sessionStorage.setItem(`expiresIn`, expiresIn);
+    sessionStorage.setItem(`uid`, uid); //uid
+    sessionStorage.setItem(`email`, email);
+    sessionStorage.setItem('role', role);
+  }
+  signUp(userdata: any) {
+    return this.http.post(`${environment.baseURL}/signup`, userdata);
+  }
+  userValue() {
+    if (sessionStorage.getItem(`accessToken`)) {
+      return sessionStorage.getItem(`accessToken`);
+    } else {
+      return '';
+    }
   }
   getMenuList() {
-    return this.http.get('http://localhost:8080/api/menu');
+    return this.http.get(`${environment.baseURL}/menu`);
   }
   getMenuCategoryItemList(id: string) {
-    return this.http.get(`http://localhost:8080/api/${id}/items`);
+    return this.http.get(`${environment.baseURL}/${id}/items`);
   }
   createItedmByCategory(id: any, data: any) {
-    ///api/create/:category/item
-    return this.http.put(`http://localhost:8080/api/create/${id}/item`, data);
+    return this.http.put(`${environment.baseURL}/create/${id}/item`, data);
   }
   CreateCategoryByMenu(type: string, payload: any) {
-    //http://localhost:8080/api/Drinks
-    return this.http.post(`http://localhost:8080/api/${type}`, payload);
+    return this.http.post(`${environment.baseURL}/${type}`, payload);
   }
   getMenuItemById(section: string, itemid: string) {
     return this.http.get(
-      `http://localhost:8080/api/menu/listItems/${section}/${itemid}`
+      `${environment.baseURL}/menu/listItems/${section}/${itemid}`
     );
   }
-  login(logdata: any): any {
-    return this.http.post('http://localhost:8080/api/login', logdata);
-  }
-  signUp(userdata: any) {
-    return this.http.post('http://localhost:8080/api/signup', userdata);
-  }
-  // updateItem(category:any,data:any):any{
-  //   return this.http.put(`http://localhost:8080/api/${category}`,data)
-  // }
 
   createOrder(payload: any) {
     console.log(payload);
     return this.http.post(
-      'http://localhost:8080/api/cart/customer_order',
+      `${environment.baseURL}/cart/customer_order`,
       payload
     );
   }
 
   getCustomerOrders() {
-    return this.http.get('http://localhost:8080/api/cart/customers_orders');
+    return this.http.get(`${environment.baseURL}/cart/customers_orders`);
   }
   getAllUsers() {
-    return this.http.get('http://localhost:8080/api/userdata');
+    return this.http.get(`${environment.baseURL}/userdata`);
+  }
+  logout() {
+    // this.http.post<any>(`${environment.baseURL}/api/users/revoke-token`, {}, { withCredentials: true }).subscribe();
+    sessionStorage.clear();
+
+    this.userSubject.next(null);
+    this.router.navigate([`/login`]);
   }
 }

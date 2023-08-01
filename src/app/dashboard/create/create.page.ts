@@ -21,7 +21,14 @@ export class CreatePage implements OnInit {
 
   constructor(private menuService: MenuService, private router: Router) {}
   menuData: Array<any> = [];
-
+  ionViewWillEnter() {
+    if (
+      !sessionStorage.getItem('role') ||
+      sessionStorage.getItem('role') !== 'admin'
+    ) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
   ngOnInit() {
     this.getMenuData();
   }

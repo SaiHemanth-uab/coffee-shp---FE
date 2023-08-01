@@ -15,17 +15,21 @@ export class CustomerOrdersPage implements OnInit {
   }
 
   ngOnInit() {}
+
   getCustomerOrders() {
     this.menuService.getCustomerOrders().subscribe((res: any) => {
       this.customerOrders = res.data;
     });
   }
   ionViewWillEnter() {
-    console.log('ionViewWillEnter');
+    if (
+      !sessionStorage.getItem('role') ||
+      sessionStorage.getItem('role') !== 'admin'
+    ) {
+      this.router.navigate(['/dashboard']);
+    }
   }
-  async ionViewDidEnter() {
-    console.log('ionViewDidEnter');
-  }
+
   viewItems(orderedItems: any) {
     this.router.navigate(['customer-orders/view-Orders'], {
       state: { order: JSON.stringify(orderedItems) },

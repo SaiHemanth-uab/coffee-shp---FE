@@ -18,7 +18,6 @@ import { MenuService } from 'src/app/services/menu.service';
 export class SignupPage
   implements OnInit, AfterContentChecked, OnChanges, AfterViewInit
 {
-  
   ionicForm: FormGroup = this.formBuilder.group({});
   isSubmitted = false;
   isLoading = false;
@@ -40,7 +39,7 @@ export class SignupPage
     public formBuilder: FormBuilder,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public menuService:MenuService
+    public menuService: MenuService
   ) {}
   formData: any;
   ngOnChanges() {
@@ -53,90 +52,17 @@ export class SignupPage
     this.cdr.detectChanges();
     this.cdr.markForCheck();
   }
+  ionViewWillEnter() {
+    sessionStorage.clear();
+  }
   ngOnInit() {
-    let checkJWT = sessionStorage.getItem('access_token');
-    let haveRefreshToken = localStorage.getItem('refresh_token');
-    let refreshed = false;
-    if (checkJWT || haveRefreshToken) {
-      // this.authenticationService.refreshToken().subscribe({
-      //   next: (res) => {
-      //     setTimeout(() => {
-      //       this.ngxService.stop();
-      //       this.goToDashBoard();
-      //     }, 5000);
-      //     this.isLoading = false;
-      //     refreshed = true;
-      //   },
-      //   error: (error) => {
-      //     sentryError(error);
-      //     this.ngxService.stop();
-      //     this.isLoading = false;
-      //     refreshed = false;
-      //   },
-      // });
-    }
-    // if (!refreshed) {
-    //   this.formData = [
-    //     {
-    //       label: 'Email',
-    //       type: 'email',
-    //       alias: 'email',
-    //       validators: [
-    //         {
-    //           key: 'required',
-    //           value: true,
-    //           customMessage: '',
-    //         },
-    //         {
-    //           key: 'email',
-    //           value: true,
-    //           customMessage: `Please Enter the valid Email.`,
-    //         },
-    //       ],
-    //       value: '',
-    //     },
-
-    //     {
-    //       label: 'Password',
-    //       type: 'password',
-    //       alias: 'password',
-    //       validators: [
-    //         {
-    //           key: 'required',
-    //           value: true,
-    //           customMessage: '',
-    //         },
-    //         {
-    //           key: 'minlength',
-    //           value: 5,
-    //           customMessage: 'Password should be minimum 5 charecter length',
-    //         },
-    //       ],
-    //       value: '',
-    //     },
-    //   ];
+    // let checkJWT = sessionStorage.getItem('access_token');
+    // let haveRefreshToken = localStorage.getItem('refresh_token');
+    // let refreshed = false;
+    // if (checkJWT || haveRefreshToken) {
     // }
 
     this.formData = [
-      {
-        label: 'Email',
-        type: 'email',
-        alias: 'email',
-        validators: [
-          {
-            key: 'required',
-            value: true,
-            customMessage: '',
-          },
-          {
-            key: 'email',
-            value: true,
-            customMessage: `Please Enter the valid Email.`,
-          },
-        ],
-        value: '',
-      },
-
       {
         label: 'User Name',
         type: 'text',
@@ -155,7 +81,24 @@ export class SignupPage
         ],
         value: '',
       },
-
+      {
+        label: 'Email',
+        type: 'email',
+        alias: 'email',
+        validators: [
+          {
+            key: 'required',
+            value: true,
+            customMessage: '',
+          },
+          {
+            key: 'email',
+            value: true,
+            customMessage: `Please Enter the valid Email.`,
+          },
+        ],
+        value: '',
+      },
       {
         label: 'Password',
         type: 'password',
@@ -191,36 +134,20 @@ export class SignupPage
 
   isSubmittedForm(event: any) {
     if (event.status && event.status == 'VALID') {
-      console.log('sai');
-
       const payload: any = {
         ...event.value,
-        role:'admin'
+        role: 'user',
       };
-      var formData=JSON.stringify(payload);
-      console.log(payload,'payload')
-      console.log(formData,'formData')
-      this.menuService.signUp(payload).subscribe((success)=>{
-        alert("Successfully created account")
-        this.router.navigate(['/login']);
-      },
-      (err)=>{
-        console.log(err,"Got an error");
-      }
 
-      )
-      // this.authenticationService.onLogin(payload).subscribe({
-      //   next: (res: any) => {
-      //     this.isSubmitted = !this.isSubmitted;
-      //     console.log('api');
-      //     this.goToDashBoard();
-      //     this.ionicForm.reset();
-      //   },
-      //   error: (error: { message: string; status: any }) => {
-      //     sentryError(error);
-      //     console.log(error);
-      //   },
-      // });
+      this.menuService.signUp(payload).subscribe(
+        (success) => {
+          alert('Successfully created account');
+          this.router.navigate(['/login']);
+        },
+        (err) => {
+          console.log(err, 'Got an error');
+        }
+      );
     }
   }
 }

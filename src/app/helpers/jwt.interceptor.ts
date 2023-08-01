@@ -8,31 +8,31 @@ import {
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
+import { MenuService } from '../services/menu.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private menuService: MenuService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const access_token: any = sessionStorage.getItem('access_token'); //this.authenticationService.userValue;
-
-    const isApiUrl = request.url.includes('rest'); //startsWith(environment.apiUrl)
-    if (access_token && isApiUrl) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: access_token, //"beaarer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjgyMDkwNTUyLCJzdWIiOiI0YmE5YTFjOC0xZmY4LTQ3MDgtOWZkMi03MzFjMTExMTAxNzgiLCJlbWFpbCI6ImRvZGRhcGFuaXJvaGl0MTIzQGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNjgyMDg2ODQ3fV0sInNlc3Npb25faWQiOiJhMGYzMDY2Zi05MjU3LTRiNDItYjI2MC1hMWMzMDhjOGI4ODUifQ.j_3cqMms6NnPhpp8UIPxJuu-oHWb1653d_T5MDVglJI",
-        }, //access_token },
-      });
+    const user: any = sessionStorage.getItem(`accessToken`);
+    const isLoggedIn: any = user;
+    if (
+      (request.url.includes('login') == false ||
+        request.url.includes('signup') == false) &&
+      isLoggedIn
+    ) {
+      const isApiUrl = request.url.startsWith(environment.baseURL);
+      if (isLoggedIn) {
+        request = request.clone({
+          setHeaders: { Authorization: `Bearer ${isLoggedIn}` },
+        });
+      }
     }
-    // request = request.clone({
-    //   setHeaders: {
-    //     apiKey: environment.apiKey,
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+
     return next.handle(request);
   }
 }
