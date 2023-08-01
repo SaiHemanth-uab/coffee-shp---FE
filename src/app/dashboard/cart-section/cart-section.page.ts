@@ -17,16 +17,7 @@ export class CartSectionPage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    if (sessionStorage.getItem('cartData')) {
-      let data: any = sessionStorage.getItem('cartData');
-      this.cartItems = JSON.parse(data);
-    } else {
-      this.cartItems = [];
-    }
-
-    this.calculatePrice();
-  }
+  ngOnInit() {}
   onMultiply(x: any, y: any) {
     return Number(x) * Number(y);
   }
@@ -38,11 +29,16 @@ export class CartSectionPage implements OnInit {
     }
   }
   ionViewWillEnter() {
-    console.log('ionViewWillEnter');
+    if (sessionStorage.getItem('cartData')) {
+      let data: any = sessionStorage.getItem('cartData');
+      this.cartItems = JSON.parse(data);
+    } else {
+      this.cartItems = [];
+    }
+
+    this.calculatePrice();
   }
-  async ionViewDidEnter() {
-    console.log('ionViewDidEnter');
-  }
+
   order() {
     let userInfo: any = JSON.parse(sessionStorage.getItem('userInfo') as any);
     let preparePayload = {
