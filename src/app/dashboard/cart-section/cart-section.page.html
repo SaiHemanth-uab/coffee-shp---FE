@@ -65,7 +65,10 @@
         </ion-card>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="!cartItems || cartItems.length == 0">
+    <ion-row
+      class="justify-content-center"
+      *ngIf="!cartItems || cartItems.length == 0"
+    >
       <h6 class="alert alert-warning">
         No Items are available please
         <a href="javascript:void(0)" (click)="clickToHome()">click here</a> to
