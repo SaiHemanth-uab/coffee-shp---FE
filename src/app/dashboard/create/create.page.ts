@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from 'src/app/services/menu.service';
 import { Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',
@@ -19,7 +19,11 @@ export class CreatePage implements OnInit {
     imageUrl: '',
   };
 
-  constructor(private menuService: MenuService, private router: Router) {}
+  constructor(
+    private menuService: MenuService,
+    private location: Location,
+    private router: Router
+  ) {}
   menuData: Array<any> = [];
   ionViewWillEnter() {
     if (
@@ -69,5 +73,8 @@ export class CreatePage implements OnInit {
     console.log(this.Menudata, 'item');
     localStorage.setItem('newItem', JSON.stringify(this.Menudata));
     this.router.navigate(['dashboard']);
+  }
+  backPage() {
+    this.location.back();
   }
 }
