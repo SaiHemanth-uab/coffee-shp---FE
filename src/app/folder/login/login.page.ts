@@ -43,7 +43,7 @@ export class LoginPage
     private router: Router,
     private cdr: ChangeDetectorRef,
     private menuService: MenuService,
-    private toastController:ToastController
+    private toastController: ToastController
   ) {}
   formData: any;
   ngOnChanges() {
@@ -110,16 +110,17 @@ export class LoginPage
   ngAfterContentChecked() {
     this.windowSize = window.innerWidth;
   }
-  toaster(){
-    this.isToastOpen=true;
-    console.log("toaster")
+  toaster() {
+    this.isToastOpen = true;
+    console.log('toaster');
   }
   async presentToast(position: 'top' | 'middle' | 'bottom') {
     const toast = await this.toastController.create({
       message: 'Successfully logged In !!!',
       duration: 1500,
-      position: position,
-      color:'success',
+      position: 'bottom',
+      color: 'dark',
+      cssClass: 'my-toast',
     });
 
     await toast.present();
@@ -127,7 +128,7 @@ export class LoginPage
 
   isSubmittedForm(event: any) {
     if (event.valid) {
-      this.isToastOpen=true;
+      this.isToastOpen = true;
       const payload: any = {
         ...event.value,
       };
@@ -135,7 +136,7 @@ export class LoginPage
         next: (res: any) => {
           this.isSubmitted = !this.isSubmitted;
           sessionStorage.setItem('userInfo', JSON.stringify(res.data.user));
-          this.presentToast('top')
+          this.presentToast('bottom');
           this.goToDashBoard();
           this.ionicForm.reset();
         },

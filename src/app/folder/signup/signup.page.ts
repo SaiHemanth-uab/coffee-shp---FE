@@ -42,7 +42,7 @@ export class SignupPage
     private router: Router,
     private cdr: ChangeDetectorRef,
     public menuService: MenuService,
-    private toastController:ToastController
+    private toastController: ToastController
   ) {}
   formData: any;
   ngOnChanges() {
@@ -138,8 +138,9 @@ export class SignupPage
     const toast = await this.toastController.create({
       message: 'Account Created Successfully !!!',
       duration: 1500,
-      position: position,
-      color:'success',
+      position: 'bottom',
+      color: 'dark',
+      cssClass: 'my-toast',
     });
 
     await toast.present();
@@ -153,7 +154,7 @@ export class SignupPage
 
       this.menuService.signUp(payload).subscribe(
         (success) => {
-          this.presentToast('top');
+          this.presentToast('bottom');
           this.router.navigate(['/login']);
         },
         (err) => {
