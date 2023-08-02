@@ -5,13 +5,14 @@
       color="primary"
       shape="round"
       (click)="openNewItemForm()"
-      class="float-right mr-4"
+      class="float-right mr-4 button-color"
       ><ion-icon name="add-outline"></ion-icon> New Item</ion-button
     >
     <ion-button
       *ngIf="this.selectedList.length > 0"
       shape="round"
       (click)="GotoCart()"
+      class="button-color"
       >{{ "Go to Cart" }}</ion-button
     >
   </div>
@@ -48,9 +49,14 @@
                 >
                 <div [ngClass]="!quantity.availableInStock ? '' : 'mt-4'">
                   <ion-button
-                    color="dark"
+                    [color]="item.DefaultSelectedSize === j ? '' : 'dark'"
+                    [ngClass]="
+                      item.DefaultSelectedSize === j ? 'button-color' : ''
+                    "
                     shape="round"
-                    [fill]="item.DefaultSelectedSize == j ? 'solid' : 'outline'"
+                    [fill]="
+                      item.DefaultSelectedSize === j ? 'solid' : 'outline'
+                    "
                     (click)="SelectedSize(item, j)"
                     [disabled]="!quantity.availableInStock"
                     >{{ quantity.size }}</ion-button
@@ -67,6 +73,7 @@
               >
                 <ion-button
                   (click)="DecreseQuantity(item, item.DefaultSelectedSize)"
+                  class="button-color"
                   >-</ion-button
                 >
                 <b class="f-24">{{
@@ -74,6 +81,7 @@
                 }}</b>
                 <ion-button
                   (click)="IncreseQuantity(item, item.DefaultSelectedSize)"
+                  class="button-color"
                   >+</ion-button
                 >
               </div>
@@ -83,6 +91,7 @@
                   item.sizes[item.DefaultSelectedSize].isSelected < 1
                 "
                 shape="round"
+                class="button-color"
                 (click)="AddtoCart(item, i)"
                 >{{ "Add to Cart" }}</ion-button
               >
@@ -98,7 +107,7 @@
       </ion-card>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="jsonData == null" class="justify-content-center f-24">
+  <ion-row *ngIf="!jsonData" class="justify-content-center f-24">
     <h6 class="alert alert-warning mt-5">
       No Items are available
       <span *ngIf="role === 'admin'"> please</span> &nbsp;

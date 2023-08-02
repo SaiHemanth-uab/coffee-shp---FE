@@ -134,9 +134,9 @@ export class SignupPage
   ngAfterContentChecked() {
     this.windowSize = window.innerWidth;
   }
-  async presentToast(position: 'top' | 'middle' | 'bottom') {
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string='Account Created Successfully !!!') {
     const toast = await this.toastController.create({
-      message: 'Account Created Successfully !!!',
+      message: message,
       duration: 1500,
       position: 'bottom',
       color: 'dark',
@@ -157,7 +157,10 @@ export class SignupPage
           this.presentToast('bottom');
           this.router.navigate(['/login']);
         },
-        (err) => {
+        (err: any) => {
+          console.log(err)
+          const message: string = err.data || err.message
+           this.presentToast('bottom', message);
           console.log(err, 'Got an error');
         }
       );

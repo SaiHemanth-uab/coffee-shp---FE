@@ -28,13 +28,13 @@
           <ion-label>Total Price : $ {{TotalPrice |number :'1.2'}}</ion-label>
         </ion-item>
         <ion-item lines="none">
-          <ion-button (click)="addmore()" class="text-center"
-            >Addmore Items</ion-button
+          <ion-button (click)="addmore()" class="text-center button-color"
+            >Add more Items</ion-button
           >
           <ion-button
             (click)="proceed()"
             *ngIf="!placeOrder"
-            class="text-center"
+            class="text-center button-color"
             >Proceed</ion-button
           >
         </ion-item>
@@ -78,7 +78,9 @@
               </table>
             </div>
             <div class="text-center">
-              <ion-button class="" (click)="order()">Place Order</ion-button>
+              <ion-button class="button-color" (click)="order()"
+                >Place Order</ion-button
+              >
             </div>
           </ion-card-content>
         </ion-card>
@@ -86,7 +88,7 @@
     </ion-row>
     <ion-row
       class="justify-content-center"
-      *ngIf="!cartItems || cartItems.length == 0"
+      *ngIf="!cartItems || cartItems.length === 0"
     >
       <h6 class="alert alert-warning">
         No Items are available <span> please</span> &nbsp;

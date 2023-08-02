@@ -41,14 +41,14 @@ export class SubCategoryComponent implements OnInit {
     this.menuService
       .getMenuCategoryItemList(categoryId)
       .subscribe((data: any) => {
-        this.jsonData;
         if (data && data.data) this.jsonData = data.data;
         this.onRearrangeCartInfo();
       });
   }
 
   onRearrangeCartInfo() {
-    if (this.selectedList.length > 0) {
+
+    if (this.jsonData && this.selectedList.length > 0) {
       this.selectedList.forEach((item: any) => {
         let idx = this.jsonData.findIndex((x: any) => x.itemid == item.itemId);
 
