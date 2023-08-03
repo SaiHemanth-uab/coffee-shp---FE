@@ -18,7 +18,9 @@
       <ion-buttons slot="end" *ngIf="role === 'admin'">
         <ion-button class="menu-button" (click)="customerOrders()"
           >Customer Orders
-          <ion-badge color="danger">{{ notificationCount }}</ion-badge>
+          <ion-badge *ngIf="notificationCount > 0" color="danger">{{
+            notificationCount
+          }}</ion-badge>
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">

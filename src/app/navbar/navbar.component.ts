@@ -2,7 +2,11 @@ import {
   Component,
   HostListener,
   OnInit,
+  ChangeDetectorRef,
   ViewChildDecorator,
+  NgZone,
+  ChangeDetectionStrategy,
+  ApplicationRef,
 } from '@angular/core';
 import {
   NavigationEnd,
@@ -16,12 +20,19 @@ import { MenuService } from '../services/menu.service';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements OnInit {
-  constructor(public router: Router, private menuService: MenuService) {}
+  constructor(
+    public router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    private menuService: MenuService,
+    private appRef: ApplicationRef
+  ) {}
   role: any = '';
   userName = '';
   notificationCount = 0;
+  isNotificationLoaded = false;
   ngOnInit() {
     this.role = sessionStorage.getItem('role');
     this.userName = JSON.parse(
@@ -31,22 +42,14 @@ export class NavbarComponent implements OnInit {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
         this.onFetchNotifications();
-        console.log(event, 'sjdh');
       }
 
       if (event instanceof NavigationEnd) {
+        this.role = sessionStorage.getItem('role');
         this.onFetchNotifications();
-        // Hide loading indicator
-        console.log(event, 'sjdh');
-      }
-
-      if (event instanceof NavigationError) {
-        // Hide loading indicator
-
-        // Present error to user
-        console.log(event.error);
       }
     });
+    this.onFetchNotifications();
   }
   @HostListener('click', ['$event'])
   onAnyAction(event: any) {
@@ -54,15 +57,24 @@ export class NavbarComponent implements OnInit {
   }
 
   onFetchNotifications() {
-    //newNotifications
-    this.menuService.getNotificationCount().subscribe({
-      next: (data: any) => {
-        this.notificationCount = data.data | 0;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
+    if (this.role && this.role == 'admin') {
+      this.menuService.getNotificationCount().subscribe({
+        next: (data: any) => {
+          this.appRef.tick();
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
+          this.notificationCount = data.data | 0;
+          this.isNotificationLoaded = true;
+          this.appRef.tick();
+          this.changeDetectorRef.detach();
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
+    }
   }
 
   ionViewDidEnter() {}
