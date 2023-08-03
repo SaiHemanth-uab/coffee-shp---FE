@@ -107,6 +107,7 @@ export class SubCategoryComponent implements OnInit {
       itemId: item.itemid,
       imageUrl: item.imageUrl,
       name: item.name,
+      category_id:item.category_id,
       itemInfo: item.sizes[DefaultSelectedSize],
       NumberOfItems: item.sizes[DefaultSelectedSize].isSelected,
     };

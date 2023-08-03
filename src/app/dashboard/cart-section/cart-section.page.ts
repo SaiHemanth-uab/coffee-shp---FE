@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../services/menu.service';
 import { ToastController } from '@ionic/angular';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-cart-section',
@@ -55,7 +56,7 @@ export class CartSectionPage implements OnInit {
 
   order() {
     let userInfo: any = JSON.parse(sessionStorage.getItem('userInfo') as any);
-    let preparePayload = {
+    let preparePayload: any = {
       userId: userInfo ? userInfo['uid'] : '',
       username: userInfo ? userInfo['displayName'] : '',
       email: userInfo ? userInfo['email'] : '',
@@ -63,9 +64,9 @@ export class CartSectionPage implements OnInit {
       ordered_time: new Date(),
       orderId: new Date().getTime().toString(36),
     };
-
-    this.menuService.createOrder(preparePayload).subscribe({
-      next: (data) => {
+    
+    forkJoin([this.menuService.CreateNotification(preparePayload), this.menuService.createOrder(preparePayload)]).subscribe({
+      next: (data: any) => {
         this.presentToast(
           `Order Placed Successfully! Please, Note it down the Order number: "${preparePayload.orderId}" and wait for your order at the counter!`
         );

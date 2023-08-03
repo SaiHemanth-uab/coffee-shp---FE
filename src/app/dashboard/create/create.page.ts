@@ -56,7 +56,7 @@ export class CreatePage implements OnInit {
     };
   }
   Submit() {
-    this.newCategory.id = this.newCategory.name;
+    this.newCategory.id = 'category_'+new Date().getDate().toString(36)+new Date().getTime().toString(36)
     console.log(JSON.stringify(this.newCategory));
     const { CategoryType, ...rest } = this.newCategory;
     this.menuService.CreateCategoryByMenu(CategoryType, rest).subscribe({

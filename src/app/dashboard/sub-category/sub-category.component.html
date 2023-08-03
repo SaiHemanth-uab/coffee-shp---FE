@@ -43,10 +43,16 @@
               >
                 <span
                   class="f-ex-small ml-2 text-danger"
-                  *ngIf="!quantity.availableInStock"
+                  *ngIf="!quantity.availableInStock || quantity.inStockQty < 1"
                   >Out of Stock</span
                 >
-                <div [ngClass]="!quantity.availableInStock ? '' : 'mt-4'">
+                <div
+                  [ngClass]="
+                    !quantity.availableInStock || quantity.inStockQty < 1
+                      ? 'mt-1'
+                      : 'mt-4'
+                  "
+                >
                   <ion-button
                     [color]="item.DefaultSelectedSize === j ? '' : 'dark'"
                     [ngClass]="
@@ -57,7 +63,9 @@
                       item.DefaultSelectedSize === j ? 'solid' : 'outline'
                     "
                     (click)="SelectedSize(item, j)"
-                    [disabled]="!quantity.availableInStock"
+                    [disabled]="
+                      !quantity.availableInStock || quantity.inStockQty < 1
+                    "
                     >{{ quantity.size }}</ion-button
                   >
                 </div>
@@ -79,6 +87,11 @@
                   item.sizes[item.DefaultSelectedSize].isSelected
                 }}</b>
                 <ion-button
+                  [disabled]="
+                    item.sizes[item.DefaultSelectedSize].inStockQty == 0 ||
+                    item.sizes[item.DefaultSelectedSize].isSelected ==
+                      item.sizes[item.DefaultSelectedSize].inStockQty
+                  "
                   (click)="IncreseQuantity(item, item.DefaultSelectedSize)"
                   class="button-color"
                   >+</ion-button

@@ -32,6 +32,7 @@ export class NewitemComponent implements OnInit {
         price: '0',
         size: '',
         unit: '1',
+        inStockQty:'0'
       },
     ],
   };
@@ -94,6 +95,7 @@ export class NewitemComponent implements OnInit {
       price: '0',
       size: '',
       unit: '1',
+      inStockQty: "0"
     });
   }
   backPage() {

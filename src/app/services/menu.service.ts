@@ -72,7 +72,9 @@ export class MenuService {
       `${environment.baseURL}/menu/listItems/${section}/${itemid}`
     );
   }
-
+  CreateNotification(payload: any) {
+  return this.http.post(`${environment.baseURL}/create/newNotification`, payload)
+}
   createOrder(payload: any) {
     console.log(payload);
     return this.http.post(
