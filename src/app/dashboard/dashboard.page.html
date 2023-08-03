@@ -1,37 +1,45 @@
 <ion-content>
   <div class="container">
-    <div class="d-flex justify-content-end" *ngIf="role === 'admin'">
-      <ion-button
-        class="ml-auto mr-4 button-color"
-        shape="round"
-        (click)="openCreateForm()"
-        ><ion-icon name="add-outline"></ion-icon> Add Category</ion-button
+    <article class="p-0 border mt-5">
+      <div
+        class="d-flex alert alert-dark justify-content-end"
+        *ngIf="role === 'admin'"
       >
-    </div>
-    <div *ngFor="let type of menuData|keyvalue">
-      <ion-item lines="none">
-        <ion-label
-          ><span class="alert alert-success h5">{{type.key}}</span></ion-label
+        <h5 class="mt-2">Menu</h5>
+        <ion-button
+          color="primary"
+          class="ml-auto"
+          shape="round"
+          (click)="openCreateForm()"
+          ><ion-icon name="add-outline"></ion-icon> Add Category</ion-button
         >
-      </ion-item>
-      <div class="row">
-        <div
-          *ngFor="let cate of type.value.categories"
-          class="col-md-2 p-0"
-          (click)="openCategory(cate.id, type.key)"
-        >
-          <div
-            class="d-flex flex-column justify-content-center align-items-center"
+      </div>
+
+      <div *ngFor="let type of menuData|keyvalue">
+        <ion-item lines="none">
+          <ion-label
+            ><span class="alert alert-success h5">{{type.key}}</span></ion-label
           >
-            <div>
-              <img [src]="cate.imageUrl" class="imageSet" />
-            </div>
-            <div>
-              <ion-label><h3 class="name">{{cate.name}}</h3></ion-label>
+        </ion-item>
+        <div class="row">
+          <div
+            *ngFor="let cate of type.value.categories"
+            class="col-md-2 p-0"
+            (click)="openCategory(cate.id, type.key)"
+          >
+            <div
+              class="d-flex flex-column justify-content-center align-items-center"
+            >
+              <div>
+                <img [src]="cate.imageUrl" class="imageSet" />
+              </div>
+              <div>
+                <ion-label><h3 class="name">{{cate.name}}</h3></ion-label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   </div>
 </ion-content>

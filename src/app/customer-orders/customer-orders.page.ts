@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../services/menu.service';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-customer-orders',
@@ -10,16 +11,24 @@ import { Router } from '@angular/router';
 export class CustomerOrdersPage implements OnInit {
   customerOrders: any;
 
-  constructor(private menuService: MenuService, private router: Router) {
-    this.getCustomerOrders();
-  }
+  constructor(private menuService: MenuService, private router: Router) {}
 
   ngOnInit() {}
-
+  newItems = [];
   getCustomerOrders() {
-    this.menuService.getCustomerOrders().subscribe((res: any) => {
-      this.customerOrders = res.data;
+    forkJoin([
+      this.menuService.getNotification(),
+      this.menuService.getCustomerOrders(),
+    ]).subscribe((res: any) => {
+      this.customerOrders = res[1].data;
+      this.newItems = res[0].data;
     });
+  }
+
+  findNewOrder(orderId: string) {
+    let data = this.newItems.find((x: any) => x.orderId === orderId);
+
+    return data ? true : false;
   }
   ionViewWillEnter() {
     if (
@@ -28,6 +37,7 @@ export class CustomerOrdersPage implements OnInit {
     ) {
       this.router.navigate(['/dashboard']);
     }
+    this.getCustomerOrders();
   }
 
   viewItems(orderedItems: any) {

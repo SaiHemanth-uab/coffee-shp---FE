@@ -73,8 +73,11 @@ export class MenuService {
     );
   }
   CreateNotification(payload: any) {
-  return this.http.post(`${environment.baseURL}/create/newNotification`, payload)
-}
+    return this.http.post(
+      `${environment.baseURL}/create/newNotification`,
+      payload
+    );
+  }
   createOrder(payload: any) {
     console.log(payload);
     return this.http.post(
@@ -88,6 +91,13 @@ export class MenuService {
   }
   getAllUsers() {
     return this.http.get(`${environment.baseURL}/userdata`);
+  }
+
+  getNotification() {
+    return this.http.get(`${environment.baseURL}/newNotifications`);
+  }
+  getNotificationCount() {
+    return this.http.get(`${environment.baseURL}/newNotifications/count`);
   }
   logout() {
     // this.http.post<any>(`${environment.baseURL}/api/users/revoke-token`, {}, { withCredentials: true }).subscribe();

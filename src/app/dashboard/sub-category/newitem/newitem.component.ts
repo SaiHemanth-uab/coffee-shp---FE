@@ -18,7 +18,7 @@ export class NewitemComponent implements OnInit {
   ) {}
   categoryName = '';
   isEditMode = '';
-   newItem = {
+  newItem = {
     itemid: '',
     name: '',
     imageUrl: '',
@@ -32,7 +32,7 @@ export class NewitemComponent implements OnInit {
         price: '0',
         size: '',
         unit: '1',
-        inStockQty:'0'
+        inStockQty: '0',
       },
     ],
   };
@@ -63,12 +63,14 @@ export class NewitemComponent implements OnInit {
   }
   Submit(form: any) {
     if (form.valid) {
-      this.newItem[ 'category_id' ] = this.categoryName;
-      if (this.isEditMode == "create") {
-         this.newItem['itemid'] = 'item_'+new Date().getDate().toString(36)+new Date().getTime().toString(36)
+      this.newItem['category_id'] = this.categoryName;
+      if (this.isEditMode == 'create') {
+        this.newItem['itemid'] =
+          'item_' +
+          new Date().getDate().toString(36) +
+          new Date().getTime().toString(36);
       }
-     
-    
+
       console.log(this.newItem, "I'm updating");
       this.menuService
         .createItemByCategory(this.categoryName, this.newItem)
@@ -83,7 +85,7 @@ export class NewitemComponent implements OnInit {
       alert('Please Enter the Valid URL');
     }
   }
- 
+
   clickToremoveSize(i: number) {
     this.newItem.sizes.splice(i, 1);
   }
@@ -95,7 +97,7 @@ export class NewitemComponent implements OnInit {
       price: '0',
       size: '',
       unit: '1',
-      inStockQty: "0"
+      inStockQty: '0',
     });
   }
   backPage() {
