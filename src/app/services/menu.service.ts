@@ -61,7 +61,7 @@ export class MenuService {
   getMenuCategoryItemList(id: string) {
     return this.http.get(`${environment.baseURL}/${id}/items`);
   }
-  createItedmByCategory(id: any, data: any) {
+  createItemByCategory(id: any, data: any) {
     return this.http.put(`${environment.baseURL}/create/${id}/item`, data);
   }
   CreateCategoryByMenu(type: string, payload: any) {

@@ -16,52 +16,9 @@ export class NewitemComponent implements OnInit {
     private router: Router,
     private navCtrl: NavController
   ) {}
-  categroryName = '';
+  categoryName = '';
   isEditMode = '';
-  ionViewWillEnter() {
-    if (
-      !sessionStorage.getItem('role') ||
-      sessionStorage.getItem('role') !== 'admin'
-    ) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
-  ngOnInit() {
-    this.categroryName = this.router.url.split('@')[1].split('/')[0];
-    this.isEditMode = this.router.url.split('@')[1].split('/')[1];
-    if (this.isEditMode !== 'create') {
-      this.getItemById(this.categroryName, this.isEditMode);
-    }
-  }
-  getItemById(section: string, itemid: string) {
-    this.menuService.getMenuItemById(section, itemid).subscribe({
-      next: (data: any) => {
-        if (data.data) this.newItem = data.data;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
-  }
-  Submit(form: any) {
-    if (form.valid) {
-      this.newItem['category_id'] = this.categroryName;
-      this.newItem['itemid'] = this.newItem['name'].replace(' ', '');
-      console.log(this.newItem, "I'm updating");
-      this.menuService
-        .createItedmByCategory(this.categroryName, this.newItem)
-        .subscribe({
-          next: (resp: any) => {
-            //this.backPage();
-            this.navCtrl.back();
-          },
-          error: (error: any) => {},
-        });
-    } else {
-      alert('Please Enter the Valid URL');
-    }
-  }
-  newItem = {
+   newItem = {
     itemid: '',
     name: '',
     imageUrl: '',
@@ -78,6 +35,54 @@ export class NewitemComponent implements OnInit {
       },
     ],
   };
+  ionViewWillEnter() {
+    if (
+      !sessionStorage.getItem('role') ||
+      sessionStorage.getItem('role') !== 'admin'
+    ) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+  ngOnInit() {
+    this.categoryName = this.router.url.split('@')[1].split('/')[0];
+    this.isEditMode = this.router.url.split('@')[1].split('/')[1];
+    if (this.isEditMode !== 'create') {
+      this.getItemById(this.categoryName, this.isEditMode);
+    }
+  }
+  getItemById(section: string, itemid: string) {
+    this.menuService.getMenuItemById(section, itemid).subscribe({
+      next: (data: any) => {
+        if (data.data) this.newItem = data.data;
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+  }
+  Submit(form: any) {
+    if (form.valid) {
+      this.newItem[ 'category_id' ] = this.categoryName;
+      if (this.isEditMode == "create") {
+         this.newItem['itemid'] = 'item_'+new Date().getDate().toString(36)+new Date().getTime().toString(36)
+      }
+     
+    
+      console.log(this.newItem, "I'm updating");
+      this.menuService
+        .createItemByCategory(this.categoryName, this.newItem)
+        .subscribe({
+          next: (resp: any) => {
+            //this.backPage();
+            this.navCtrl.back();
+          },
+          error: (error: any) => {},
+        });
+    } else {
+      alert('Please Enter the Valid URL');
+    }
+  }
+ 
   clickToremoveSize(i: number) {
     this.newItem.sizes.splice(i, 1);
   }
