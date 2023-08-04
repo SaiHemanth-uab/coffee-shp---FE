@@ -98,6 +98,7 @@ export class SubCategoryComponent implements OnInit {
 
       console.log(this.selectedList);
       if (this.selectedList.length > 0) this.isOneItemSelected = true;
+       sessionStorage.setItem('cartData', JSON.stringify(this.selectedList));
     }
   }
 
