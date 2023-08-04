@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuService } from '../../services/menu.service';
 import { ToastController } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -43,7 +44,8 @@ export class LoginPage
     private router: Router,
     private cdr: ChangeDetectorRef,
     private menuService: MenuService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private toastService:ToastService
   ) {}
   formData: any;
   ngOnChanges() {
@@ -140,10 +142,15 @@ export class LoginPage
           this.goToDashBoard();
           this.ionicForm.reset();
         },
-        error: (error: { message: string; status: any }) => {
-          console.log(error);
-        },
-      });
+      //   error: (error: { message: string; status: any }) => {
+      //     this.toastService.presentToast(error);
+      //   },
+      // });
+        error: (er:any) => {
+      this.toastService.presentToast(er.message);
+       console.log(er.message,er)
+       
+  }});
     }
   }
 }

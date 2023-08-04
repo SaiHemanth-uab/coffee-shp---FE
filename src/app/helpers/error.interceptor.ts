@@ -33,6 +33,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         //   error = 'User Not Found';
         // if (error.includes('Firebase: Error (auth/wrong-password).'))
         //   error = 'Please enter the correct Password';
+        console.log(err)
         return throwError(() => err.error);
       })
     );
